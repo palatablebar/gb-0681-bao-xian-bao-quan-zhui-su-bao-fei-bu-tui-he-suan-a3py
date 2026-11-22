@@ -19,10 +19,11 @@ docker compose up --build -d
 - 保费重算：`/m5_calculate`、`/api/m5_calculate`
 - 补退对账：`/m6_reconcile`、`/api/m6_reconcile`
 - 结案归档：`/m7_archive`、`/api/m7_archive`
+- 豁免结算：`/m8_waiver`、`/api/m8_waiver`
 
 ## 核心规则
 
-按保全有效日拆分责任区间，撤销回滚指向原变更；实收补退按日精确分配尾差。完整数值、边界和异常定义见 `docs/DATA-DICTIONARY.md`。
+按保全有效日拆分责任区间，撤销回滚指向原变更；实收补退按日精确分配尾差。完整数值、边界和异常定义见 `docs/DATA-DICTIONARY.md`。重疾豁免自失能日起免缴主险、附加险续缴：应退先抵扣已出账附加险应收、余额退现金，未出账应收不抵扣；结算幂等换版、被引用证据禁删。
 
 ## 验证
 

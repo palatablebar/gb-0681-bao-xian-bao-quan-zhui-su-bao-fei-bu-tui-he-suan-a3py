@@ -6,10 +6,13 @@ from app.workflow import run,load
 from app import store
 from app.web import payload
 from app.modules.m7_archive.export_out import bundle
+from app.modules.m8_waiver.handler import bp as waiver_bp
+from app.modules.m8_waiver import service as waiver_service
 
 def create_app():
     app=Flask(__name__);app.config['MAX_CONTENT_LENGTH']=2_000_000
     for entry in MODULES:app.register_blueprint(importlib.import_module('app.modules.'+entry[0]+'.handler').bp)
+    app.register_blueprint(waiver_bp)
     @app.errorhandler(DomainError)
     def domain_error(error):return jsonify(code=error.code,message=error.message),error.status
     @app.errorhandler(404)
@@ -38,6 +41,7 @@ def create_app():
     with app.app_context():
         if not store.history():
             state=run(load('dirty.csv'),{});store.save(state['run_id'],state)
+        waiver_service.seed_demo()
     return app
 
 app=create_app()

@@ -1,7 +1,7 @@
 import base64
 from flask import request,render_template,jsonify
 from app.errors import DomainError
-from app.config import TITLE,MODULES,SHORT
+from app.config import TITLE,MODULES,SHORT,EXTRA_NAV
 from app.workflow import run,load
 from app import store
 
@@ -20,4 +20,4 @@ def page(stage,template):
     latest=store.history();state=store.get(latest[0]['id']) if latest else run(load('dirty.csv'),{})
     source=load(request.args['sample']) if 'sample' in request.args else base64.b64decode(state['source_b64']) if state.get('source_b64') else load('dirty.csv')
     data=run(source,state.get('manifest',{}).get('parameters',{}),stage)
-    return render_template(template,title=TITLE,short=SHORT,modules=MODULES,current=stage,data=data,run=state,history=latest)
+    return render_template(template,title=TITLE,short=SHORT,modules=MODULES+EXTRA_NAV,current=stage,data=data,run=state,history=latest)

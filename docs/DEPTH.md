@@ -13,6 +13,7 @@
 | M5 保费重算 | 查看并复算保费重算 | `/api/m5_calculate` | `app/modules/m5_calculate/rules.py` | `tests/test_calculate.py` |
 | M6 补退对账 | 查看并复算补退对账 | `/api/m6_reconcile` | `app/modules/m6_reconcile/compare.py` | `tests/test_reconcile.py` |
 | M7 结案归档 | 查看并复算结案归档 | `/api/m7_archive` | `app/modules/m7_archive/export_out.py` | `tests/test_archive.py` |
+| M8 豁免结算 | 认定重疾豁免并执行唯一结算 | `/api/m8_waiver` | `app/modules/m8_waiver/rules.py` | `tests/test_waiver.py` |
 
 ## 陷阱登记
 
@@ -31,6 +32,9 @@
 | TRAP-26 | 旧版本复核 | 覆盖新结论 | 事务条件更新 | `app/store.py` | `tests/test_archive.py::test_stale_review` |
 | TRAP-23 | 生效日端点 | 双计生效日 | 半开区间 | `app/modules/m4_segments/rules.py` | `tests/test_segments.py::test_halfopen_conservation` |
 | TRAP-24 | 分币尾差 | 段合计不等 | 最大余额法 | `app/modules/m5_calculate/rules.py` | `tests/test_calculate.py::test_largest_remainder_conserves` |
+| TRAP-31 | 结算重跑 | 重复退回抵扣 | 输入哈希幂等 | `app/modules/m8_waiver/service.py` | `tests/test_waiver.py::test_settle_idempotent_no_new_entries` |
+| TRAP-32 | 换版中断 | 新旧两版残缺 | 事务回滚保旧版 | `app/modules/m8_waiver/service.py` | `tests/test_waiver.py::test_interrupted_replace_keeps_old_version` |
+| TRAP-33 | 误删证据 | 结算无法解释 | 引用禁止删除 | `app/modules/m8_waiver/service.py` | `tests/test_waiver.py::test_delete_determination_locked` |
 
 ## 对账规则
 
